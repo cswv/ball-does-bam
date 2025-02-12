@@ -10,7 +10,7 @@ import {
 } from "cc";
 const { ccclass, property } = _decorator;
 
-export const BLOCK_SIZE = 40;
+export const PADDLE_SIZE = 100;
 
 @ccclass("PaddleController")
 export class PaddleController extends Component {
@@ -26,11 +26,19 @@ export class PaddleController extends Component {
     const lastDir = this._movingDirs[this._movingDirs.length - 1];
     if (lastDir === "L") {
       this.node.getPosition(this._curPos);
-      Vec3.add(this._curPos, this._curPos, new Vec3(100 * deltaTime, 0, 0));
+      Vec3.add(
+        this._curPos,
+        this._curPos,
+        new Vec3(PADDLE_SIZE * deltaTime, 0, 0)
+      );
       this.node.setPosition(this._curPos);
     } else if (lastDir === "R") {
       this.node.getPosition(this._curPos);
-      Vec3.add(this._curPos, this._curPos, new Vec3(-100 * deltaTime, 0, 0));
+      Vec3.add(
+        this._curPos,
+        this._curPos,
+        new Vec3(-PADDLE_SIZE * deltaTime, 0, 0)
+      );
       this.node.setPosition(this._curPos);
     }
   }

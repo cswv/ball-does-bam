@@ -8,6 +8,7 @@
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "Brick"
+    "syncNodeName": "Brick",
+    "persistent": false
   }
 }
