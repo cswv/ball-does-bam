@@ -24,10 +24,13 @@ enum GameState {
   END,
 }
 
-export const BRICK_SIZE = 100;
-const TOP_Y = 680;
+const BRICK_WIDTH = 100;
+const BRICK_HEIGHT = 50;
+const TOP_Y = 620;
 const DIST_BETWEEN = 10;
-const DIST_FROM_LEFT = 30;
+const DIST_FROM_LEFT = 20;
+const BRICK_ROWS = 5;
+const BRICK_COLUMNS = 11;
 
 @ccclass("GameManager")
 export class GameManager extends Component {
@@ -41,8 +44,7 @@ export class GameManager extends Component {
   public ballCtrl: BallController | null = null;
   @property({ type: Label })
   public scoreLabel: Label | null = null;
-  public brickCount = 12;
-  private _bricks: BrickType[] = [];
+  private _bricks: BrickType[][] = [[]];
 
   start() {
     this.setCurState(GameState.INIT);
@@ -105,22 +107,28 @@ export class GameManager extends Component {
   generateBricks() {
     this.node.removeAllChildren();
 
-    for (let i = 0; i < this.brickCount; i++) {
-      this._bricks.push(Math.floor(Math.random() * 2));
+    for (let i = 0; i < BRICK_COLUMNS; i++) {
+      const bricks = [];
+      for (let j = 0; j < BRICK_ROWS; j++) {
+        bricks.push(Math.floor(Math.random() * 2));
+      }
+      this._bricks.push(bricks);
     }
 
     for (let i = 0; i < this._bricks.length; i++) {
-      let brick: Node | null = this.spawnBrickByType(this._bricks[i]);
-      if (brick) {
-        this.node.addChild(brick);
-        brick.setPosition(
-          i * BRICK_SIZE + DIST_FROM_LEFT + DIST_BETWEEN * i,
-          TOP_Y,
-          0
-        );
-        let collider = brick.getComponent(BoxCollider2D);
-        if (collider) {
-          collider.apply();
+      for (let j = 0; j < this._bricks[i].length; j++) {
+        let brick: Node | null = this.spawnBrickByType(this._bricks[i][j]);
+        if (brick) {
+          this.node.addChild(brick);
+          brick.setPosition(
+            i * BRICK_WIDTH + DIST_BETWEEN * i - DIST_FROM_LEFT,
+            TOP_Y - j * BRICK_HEIGHT - DIST_BETWEEN * j,
+            0
+          );
+          let collider = brick.getComponent(BoxCollider2D);
+          if (collider) {
+            collider.apply();
+          }
         }
       }
     }

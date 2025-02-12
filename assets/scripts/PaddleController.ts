@@ -13,7 +13,7 @@ import {
 } from "cc";
 const { ccclass, property } = _decorator;
 
-export const PADDLE_VEL = 40;
+const PADDLE_VEL = 40;
 const PADDLE_RESET_POSITION = new Vec3(0, -320, 0);
 
 @ccclass("PaddleController")
