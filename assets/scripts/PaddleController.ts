@@ -1,63 +1,68 @@
 import {
   _decorator,
   Component,
-  Node,
   input,
   Input,
   EventKeyboard,
-  Vec3,
-  EventMouse,
+  RigidBody2D,
+  Vec2,
+  view,
+  UITransform,
+  KeyCode,
 } from "cc";
 const { ccclass, property } = _decorator;
 
-export const PADDLE_SIZE = 100;
+export const PADDLE_VEL = 10;
 
 @ccclass("PaddleController")
 export class PaddleController extends Component {
-  private _curPos: Vec3 = new Vec3();
-  private _movingDirs: ("L" | "R")[] = [];
+  private _movingDirs: number[] = [];
+  private _rb: RigidBody2D = null;
+  private _halfScreenSize = 0;
+  private _halfPaddleWidth = 0;
 
   start() {
+    this._rb = this.getComponent(RigidBody2D);
+    this._halfScreenSize = view.getVisibleSize().width / 2;
+    this._halfPaddleWidth =
+      this.node.getComponent(UITransform).contentSize.width / 2;
+
     input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
     input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
   }
 
   update(deltaTime: number) {
-    const lastDir = this._movingDirs[this._movingDirs.length - 1];
-    if (lastDir === "L") {
-      this.node.getPosition(this._curPos);
-      Vec3.add(
-        this._curPos,
-        this._curPos,
-        new Vec3(PADDLE_SIZE * deltaTime, 0, 0)
-      );
-      this.node.setPosition(this._curPos);
-    } else if (lastDir === "R") {
-      this.node.getPosition(this._curPos);
-      Vec3.add(
-        this._curPos,
-        this._curPos,
-        new Vec3(-PADDLE_SIZE * deltaTime, 0, 0)
-      );
-      this.node.setPosition(this._curPos);
+    if (this._movingDirs.length === 0) {
+      this._rb.linearVelocity = new Vec2(0, 0);
+    } else {
+      const lastDir = this._movingDirs[this._movingDirs.length - 1];
+      const pos = this.node.getPosition();
+      const rightBound = this._halfScreenSize - this._halfPaddleWidth;
+      const leftBound = -this._halfScreenSize + this._halfPaddleWidth;
+      if (
+        (pos.x >= rightBound && lastDir === 1) ||
+        (pos.x <= leftBound && lastDir === -1)
+      ) {
+        this._rb.linearVelocity = new Vec2(0, 0);
+      } else {
+        this._rb.linearVelocity = new Vec2(lastDir * PADDLE_VEL, 0);
+      }
     }
   }
 
   onKeyDown(event: EventKeyboard) {
-    if (event.keyCode === 39) {
-      this._movingDirs.push("L");
-      this.node.getPosition(this._curPos);
-    } else if (event.keyCode === 37) {
-      this._movingDirs.push("R");
-      this.node.getPosition(this._curPos);
+    if (event.keyCode === KeyCode.ARROW_LEFT) {
+      this._movingDirs.push(-1);
+    } else if (event.keyCode === KeyCode.ARROW_RIGHT) {
+      this._movingDirs.push(1);
     }
   }
 
   onKeyUp(event: EventKeyboard) {
-    if (event.keyCode === 39) {
-      this._movingDirs = this._movingDirs.filter((d) => d !== "L");
-    } else if (event.keyCode === 37) {
-      this._movingDirs = this._movingDirs.filter((d) => d !== "R");
+    if (event.keyCode === KeyCode.ARROW_LEFT) {
+      this._movingDirs = this._movingDirs.filter((d) => d !== -1);
+    } else if (event.keyCode === KeyCode.ARROW_RIGHT) {
+      this._movingDirs = this._movingDirs.filter((d) => d !== 1);
     }
   }
 }

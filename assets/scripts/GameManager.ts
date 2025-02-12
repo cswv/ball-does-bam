@@ -1,6 +1,6 @@
 import {
   _decorator,
-  CCInteger,
+  BoxCollider2D,
   Color,
   Component,
   instantiate,
@@ -15,16 +15,16 @@ enum BrickType {
   BLUE,
 }
 
-export const BRICK_SIZE = 150;
+export const BRICK_SIZE = 100;
 const TOP_Y = 680;
-const DIST_BETWEEN = 20;
+const DIST_BETWEEN = 10;
 const DIST_FROM_LEFT = 30;
 
 @ccclass("GameManager")
 export class GameManager extends Component {
   @property({ type: Prefab })
   public brickPrefab: Prefab | null = null;
-  public brickCount = 8;
+  public brickCount = 12;
   private _bricks: BrickType[] = [];
 
   start() {
@@ -49,6 +49,10 @@ export class GameManager extends Component {
           TOP_Y,
           0
         );
+        let collider = brick.getComponent(BoxCollider2D);
+        if (collider) {
+          collider.apply();
+        }
       }
     }
   }
