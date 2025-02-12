@@ -9,10 +9,12 @@ import {
   view,
   UITransform,
   KeyCode,
+  Vec3,
 } from "cc";
 const { ccclass, property } = _decorator;
 
-export const PADDLE_VEL = 10;
+export const PADDLE_VEL = 40;
+const PADDLE_RESET_POSITION = new Vec3(0, -320, 0);
 
 @ccclass("PaddleController")
 export class PaddleController extends Component {
@@ -26,9 +28,17 @@ export class PaddleController extends Component {
     this._halfScreenWidth = view.getVisibleSize().width / 2;
     this._halfPaddleWidth =
       this.node.getComponent(UITransform).contentSize.width / 2;
+  }
 
-    input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
-    input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
+  setActive(active: boolean) {
+    if (active) {
+      this.node.setPosition(PADDLE_RESET_POSITION);
+      input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
+      input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
+    } else {
+      input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
+      input.off(Input.EventType.KEY_UP, this.onKeyUp, this);
+    }
   }
 
   update(deltaTime: number) {

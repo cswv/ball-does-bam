@@ -4,15 +4,24 @@ import {
   Color,
   Component,
   instantiate,
+  Label,
   Node,
   Prefab,
   Sprite,
 } from "cc";
+import { PaddleController } from "./PaddleController";
+import { BallController } from "./BallController";
 const { ccclass, property } = _decorator;
 
 enum BrickType {
   RED,
   BLUE,
+}
+
+enum GameState {
+  INIT,
+  PLAYING,
+  END,
 }
 
 export const BRICK_SIZE = 100;
@@ -24,14 +33,74 @@ const DIST_FROM_LEFT = 30;
 export class GameManager extends Component {
   @property({ type: Prefab })
   public brickPrefab: Prefab | null = null;
+  @property({ type: Node })
+  public startMenu: Node | null = null;
+  @property({ type: PaddleController })
+  public paddleCtrl: PaddleController | null = null;
+  @property({ type: BallController })
+  public ballCtrl: BallController | null = null;
+  @property({ type: Label })
+  public scoreLabel: Label | null = null;
   public brickCount = 12;
   private _bricks: BrickType[] = [];
 
   start() {
+    this.setCurState(GameState.INIT);
+  }
+
+  init() {
+    if (this.startMenu) {
+      this.startMenu.active = true;
+    }
+
     this.generateBricks();
+
+    if (this.paddleCtrl) {
+      this.paddleCtrl.setActive(false);
+      this.ballCtrl.setActive(false);
+    }
+  }
+
+  onStartButtonClicked() {
+    this.setCurState(GameState.PLAYING);
   }
 
   update(deltaTime: number) {}
+
+  setCurState(value: GameState) {
+    switch (value) {
+      case GameState.INIT:
+        this.init();
+        break;
+      case GameState.PLAYING:
+        this.startPlaying();
+        break;
+      case GameState.END:
+        break;
+    }
+  }
+
+  startPlaying() {
+    if (this.startMenu) {
+      this.startMenu.active = false;
+    }
+
+    if (this.scoreLabel) {
+      this.scoreLabel.string = "0";
+    }
+
+    setTimeout(() => {
+      if (this.paddleCtrl) {
+        this.paddleCtrl.setActive(true);
+      }
+    }, 0.1);
+
+    setTimeout(() => {
+      if (this.ballCtrl) {
+        this.ballCtrl.setActive(true);
+      }
+    }, 0.2);
+  }
 
   generateBricks() {
     this.node.removeAllChildren();

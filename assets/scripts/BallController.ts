@@ -14,7 +14,15 @@ export class BallController extends Component {
     this._halfScreenHeight = screenSize.height / 2;
     this._halfScreenWidth = screenSize.width / 2;
     this._rb = this.node.getComponent(RigidBody2D);
-    this.setRandomVel();
+  }
+
+  setActive(active: boolean) {
+    if (active) {
+      this.setRandomVel();
+    } else {
+      this.node.setPosition(BALL_RESET_POSITION);
+      this._rb.linearVelocity = new Vec2(0, 0);
+    }
   }
 
   update(deltaTime: number) {
@@ -26,8 +34,8 @@ export class BallController extends Component {
   }
 
   setRandomVel() {
-    const xVel = this.generateRandomVel(5, 20);
-    const yVel = this.generateRandomVel(5, 20);
+    const xVel = this.generateRandomVel(20, 30);
+    const yVel = this.generateRandomVel(20, 30);
     if (this._rb) {
       this._rb.linearVelocity = new Vec2(xVel, yVel);
     }
