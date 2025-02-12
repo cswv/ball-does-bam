@@ -18,12 +18,12 @@ export const PADDLE_VEL = 10;
 export class PaddleController extends Component {
   private _movingDirs: number[] = [];
   private _rb: RigidBody2D = null;
-  private _halfScreenSize = 0;
+  private _halfScreenWidth = 0;
   private _halfPaddleWidth = 0;
 
   start() {
     this._rb = this.getComponent(RigidBody2D);
-    this._halfScreenSize = view.getVisibleSize().width / 2;
+    this._halfScreenWidth = view.getVisibleSize().width / 2;
     this._halfPaddleWidth =
       this.node.getComponent(UITransform).contentSize.width / 2;
 
@@ -37,8 +37,8 @@ export class PaddleController extends Component {
     } else {
       const lastDir = this._movingDirs[this._movingDirs.length - 1];
       const pos = this.node.getPosition();
-      const rightBound = this._halfScreenSize - this._halfPaddleWidth;
-      const leftBound = -this._halfScreenSize + this._halfPaddleWidth;
+      const rightBound = this._halfScreenWidth - this._halfPaddleWidth;
+      const leftBound = -this._halfScreenWidth + this._halfPaddleWidth;
       if (
         (pos.x >= rightBound && lastDir === 1) ||
         (pos.x <= leftBound && lastDir === -1)
