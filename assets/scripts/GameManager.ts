@@ -37,6 +37,8 @@ const BRICK_COLUMNS = 11;
 export class GameManager extends Component {
   @property({ type: Prefab })
   public brickPrefab: Prefab | null = null;
+  @property({ type: Prefab })
+  public heartPrefab: Prefab | null = null;
   @property({ type: Node })
   public startMenu: Node | null = null;
   @property({ type: Node })
@@ -135,6 +137,7 @@ export class GameManager extends Component {
     eventTarget.on(GameEvents.GOT_SCORE, this.onGotScore, this);
     eventTarget.on(GameEvents.LOST_LIFE, this.onLifeLost, this);
     eventTarget.on(GameEvents.BRICK_DESTROYED, this.onBrickDestroyed, this);
+    eventTarget.on(GameEvents.GOT_LIFE, this.onGotLife, this);
   }
 
   endGame() {
@@ -168,7 +171,7 @@ export class GameManager extends Component {
     for (let i = 0; i < BRICK_COLUMNS; i++) {
       const bricksCol = [];
       for (let j = 0; j < BRICK_ROWS; j++) {
-        bricksCol.push(Math.floor(Math.random() * 3) < 2 ? 0 : 1);
+        bricksCol.push(Math.random() < 0.7 ? 0 : 1);
       }
       bricks.push(bricksCol);
     }
@@ -183,10 +186,6 @@ export class GameManager extends Component {
             TOP_Y - j * BRICK_HEIGHT - DIST_BETWEEN * j,
             0
           );
-          let collider = brick.getComponent(BoxCollider2D);
-          if (collider) {
-            collider.apply();
-          }
         }
       }
     }
@@ -223,10 +222,35 @@ export class GameManager extends Component {
     this.livesLabel.string = `${parseInt(this.livesLabel.string) - 1}`;
   }
 
-  onBrickDestroyed() {
+  onGotLife() {
+    this.livesLabel.string = `${parseInt(this.livesLabel.string) + 1}`;
+  }
+
+  onBrickDestroyed({ x, y }: { x: number; y: number }) {
     this._bricksDestroyed++;
     if (this._bricksDestroyed === BRICK_COLUMNS * BRICK_ROWS) {
       this.setCurState(GameState.END);
+    } else {
+      if (parseInt(this.livesLabel.string) < 3) {
+        const shouldSpawnHeart = Math.random() > 0.8;
+        if (shouldSpawnHeart) {
+          this.spawnHeart(x, y);
+        }
+      }
+    }
+  }
+
+  spawnHeart(x: number, y: number) {
+    if (!this.heartPrefab) {
+      return null;
+    }
+    let heart: Node | null = null;
+    heart = instantiate(this.heartPrefab);
+    if (heart) {
+      setTimeout(() => {
+        this.node.addChild(heart);
+        heart.setPosition(x, y, 0);
+      }, 0);
     }
   }
 }

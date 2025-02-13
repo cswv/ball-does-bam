@@ -32,7 +32,11 @@ export class BrickController extends Component {
         this.scheduleOnce(() => {
           selfCol.node.destroy();
         });
-        eventTarget.emit(GameEvents.BRICK_DESTROYED);
+        const worldPos = this.node.getWorldPosition();
+        eventTarget.emit(GameEvents.BRICK_DESTROYED, {
+          x: worldPos.x,
+          y: worldPos.y,
+        });
       }
     }
   }

@@ -542,7 +542,7 @@
     "_enabled": true,
     "__prefab": null,
     "tag": 0,
-    "_group": 1,
+    "_group": 2,
     "_density": 1,
     "_sensor": false,
     "_friction": 0.2,
@@ -606,7 +606,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": -640,
-      "y": -360.00000000000006,
+      "y": -360,
       "z": 0
     },
     "_lrot": {
@@ -644,6 +644,10 @@
     "__prefab": null,
     "brickPrefab": {
       "__uuid__": "8fc6596f-2d2b-4bb9-84f4-112fdf168030",
+      "__expectedType__": "cc.Prefab"
+    },
+    "heartPrefab": {
+      "__uuid__": "c80058ac-83bf-457e-83e8-7ef20b1b9f32",
       "__expectedType__": "cc.Prefab"
     },
     "startMenu": {

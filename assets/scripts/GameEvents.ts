@@ -4,6 +4,7 @@ export const eventTarget = new EventTarget();
 
 export enum GameEvents {
   LOST_LIFE,
+  GOT_LIFE,
   GOT_SCORE,
   BRICK_DESTROYED,
 }

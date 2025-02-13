@@ -1,3 +1,20 @@
 {
-  "__version__": "1.0.6"
+  "__version__": "1.0.6",
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "Paddle"
+      },
+      {
+        "index": 2,
+        "name": "Heart"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 3,
+      "1": 5,
+      "2": 2
+    }
+  }
 }
