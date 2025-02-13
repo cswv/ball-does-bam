@@ -17,6 +17,7 @@ const { ccclass, property } = _decorator;
 enum BrickType {
   RED,
   BLUE,
+  GREEN,
 }
 
 enum GameState {
@@ -171,7 +172,8 @@ export class GameManager extends Component {
     for (let i = 0; i < BRICK_COLUMNS; i++) {
       const bricksCol = [];
       for (let j = 0; j < BRICK_ROWS; j++) {
-        bricksCol.push(Math.random() < 0.7 ? 0 : 1);
+        const random = Math.random();
+        bricksCol.push(random < 0.6 ? 0 : random < 0.8 ? 1 : 2);
       }
       bricks.push(bricksCol);
     }
@@ -196,15 +198,16 @@ export class GameManager extends Component {
       return null;
     }
 
-    let brick: Node | null = null;
+    let brick: Node | null = instantiate(this.brickPrefab);
     switch (type) {
       case BrickType.RED:
-        brick = instantiate(this.brickPrefab);
         brick.getComponent(Sprite).color = Color.RED;
         break;
       case BrickType.BLUE:
-        brick = instantiate(this.brickPrefab);
         brick.getComponent(Sprite).color = Color.BLUE;
+        break;
+      case BrickType.GREEN:
+        brick.getComponent(Sprite).color = Color.GREEN;
         break;
     }
 

@@ -31,7 +31,9 @@ export class BrickController extends Component {
     if (otherCol.node.name === "Ball") {
       eventTarget.emit(GameEvents.GOT_SCORE);
       const sprite = selfCol.node.getComponent(Sprite);
-      if (sprite.color.equals(Color.BLUE)) {
+      if (sprite.color.equals(Color.GREEN)) {
+        sprite.color = Color.BLUE;
+      } else if (sprite.color.equals(Color.BLUE)) {
         sprite.color = Color.RED;
       } else {
         if (this.destrParticlesPrefab) {
