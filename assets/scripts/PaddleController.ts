@@ -33,6 +33,7 @@ export class PaddleController extends Component {
   setActive(active: boolean) {
     if (active) {
       this.node.setPosition(PADDLE_RESET_POSITION);
+      this._movingDirs = [];
       input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
       input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
     } else {

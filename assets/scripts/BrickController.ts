@@ -5,7 +5,9 @@ import {
   Color,
   Component,
   Contact2DType,
-  Node,
+  instantiate,
+  ParticleSystem2D,
+  Prefab,
   Sprite,
 } from "cc";
 import { eventTarget, GameEvents } from "./GameEvents";
@@ -13,6 +15,9 @@ const { ccclass, property } = _decorator;
 
 @ccclass("BrickController")
 export class BrickController extends Component {
+  @property({ type: Prefab })
+  public destrParticlesPrefab: Prefab | null = null;
+
   start() {
     const collider = this.getComponent(BoxCollider2D);
     if (collider) {
@@ -29,6 +34,19 @@ export class BrickController extends Component {
       if (sprite.color.equals(Color.BLUE)) {
         sprite.color = Color.RED;
       } else {
+        if (this.destrParticlesPrefab) {
+          const particleNode = instantiate(this.destrParticlesPrefab);
+          particleNode.setPosition(selfCol.node.worldPosition);
+          selfCol.node.parent?.addChild(particleNode);
+          const particles = particleNode.getComponent(ParticleSystem2D);
+          if (particles) {
+            particles.resetSystem();
+            this.scheduleOnce(() => {
+              particleNode.destroy();
+            }, 0.1);
+          }
+        }
+
         this.scheduleOnce(() => {
           selfCol.node.destroy();
         });

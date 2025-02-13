@@ -221,6 +221,10 @@
     "__prefab": {
       "__id__": 11
     },
+    "destrParticlesPrefab": {
+      "__uuid__": "bc0a3eb5-925d-48bc-8405-af4c1206aa28",
+      "__expectedType__": "cc.Prefab"
+    },
     "_id": ""
   },
   {
