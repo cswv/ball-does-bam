@@ -26,18 +26,20 @@ export class BallController extends Component {
     this._halfScreenHeight = screenSize.height / 2;
     this._halfScreenWidth = screenSize.width / 2;
     this._rb = this.node.getComponent(RigidBody2D);
-
-    const collider = this.getComponent(CircleCollider2D);
-    if (collider) {
-      collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
-    }
   }
 
   setActive(active: boolean) {
+    const collider = this.getComponent(CircleCollider2D);
     if (active) {
+      if (collider) {
+        collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
+      }
+      this.node.setPosition(BALL_RESET_POSITION);
       this._rb.linearVelocity = new Vec2(10, 10);
     } else {
-      this.node.setPosition(BALL_RESET_POSITION);
+      if (collider) {
+        collider.off(Contact2DType.END_CONTACT, this.onEndContact, this);
+      }
       this._rb.linearVelocity = new Vec2(0, 0);
     }
   }

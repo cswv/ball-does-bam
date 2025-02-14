@@ -30,9 +30,10 @@ const BRICK_WIDTH = 100;
 const BRICK_HEIGHT = 50;
 const TOP_Y = 620;
 const DIST_BETWEEN = 10;
-const DIST_FROM_LEFT = 20;
-const BRICK_ROWS = 5;
-const BRICK_COLUMNS = 11;
+const DIST_FROM_LEFT = 50;
+const BRICK_ROWS = 3;
+const BRICK_COLUMNS = 10;
+const START_LIVES = "3";
 
 @ccclass("GameManager")
 export class GameManager extends Component {
@@ -120,7 +121,7 @@ export class GameManager extends Component {
     }
 
     if (this.livesLabel) {
-      this.livesLabel.string = "3";
+      this.livesLabel.string = START_LIVES;
     }
 
     setTimeout(() => {
@@ -163,6 +164,7 @@ export class GameManager extends Component {
     eventTarget.off(GameEvents.GOT_SCORE, this.onGotScore, this);
     eventTarget.off(GameEvents.LOST_LIFE, this.onLifeLost, this);
     eventTarget.off(GameEvents.BRICK_DESTROYED, this.onBrickDestroyed, this);
+    eventTarget.off(GameEvents.GOT_LIFE, this.onGotLife, this);
   }
 
   generateBricks() {
@@ -184,7 +186,7 @@ export class GameManager extends Component {
         if (brick) {
           this.node.addChild(brick);
           brick.setPosition(
-            i * BRICK_WIDTH + DIST_BETWEEN * i - DIST_FROM_LEFT,
+            i * BRICK_WIDTH + DIST_BETWEEN * i + DIST_FROM_LEFT,
             TOP_Y - j * BRICK_HEIGHT - DIST_BETWEEN * j,
             0
           );
@@ -234,7 +236,7 @@ export class GameManager extends Component {
     if (this._bricksDestroyed === BRICK_COLUMNS * BRICK_ROWS) {
       this.setCurState(GameState.END);
     } else {
-      if (parseInt(this.livesLabel.string) < 3) {
+      if (parseInt(this.livesLabel.string) < parseInt(START_LIVES)) {
         const shouldSpawnHeart = Math.random() > 0.8;
         if (shouldSpawnHeart) {
           this.spawnHeart(x, y);

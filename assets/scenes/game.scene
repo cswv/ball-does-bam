@@ -456,7 +456,7 @@
     "_group": 1,
     "_density": 1,
     "_sensor": false,
-    "_friction": 0.2,
+    "_friction": 0,
     "_restitution": 1,
     "_offset": {
       "__type__": "cc.Vec2",
@@ -589,7 +589,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0.094,
-      "y": 0.429,
+      "y": 0.478,
       "z": 0
     },
     "_lrot": {
@@ -716,7 +716,7 @@
     },
     "_type": 0,
     "_fillType": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -1513,7 +1513,7 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 550,
+      "x": 545,
       "y": 330,
       "z": 0
     },
@@ -1645,7 +1645,7 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 600,
+      "x": 593.064,
       "y": 330,
       "z": 0
     },
@@ -1714,7 +1714,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "2",
+    "_string": "3",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 20,
@@ -3831,8 +3831,8 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 1.529,
-      "y": 339.124,
+      "x": 1,
+      "y": 393.173,
       "z": 0
     },
     "_lrot": {
@@ -4128,7 +4128,7 @@
     "asset": null,
     "fileId": "3ee8b6b4-97ce-400c-9cff-f255136a41c0",
     "instance": null,
-    "targetOverrides": null
+    "targetOverrides": []
   },
   {
     "__type__": "cc.SceneGlobals",
