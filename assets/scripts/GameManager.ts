@@ -124,6 +124,8 @@ export class GameManager extends Component {
       this.livesLabel.string = START_LIVES;
     }
 
+    this._bricksDestroyed = 0;
+
     setTimeout(() => {
       if (this.paddleCtrl) {
         this.paddleCtrl.setActive(true);
